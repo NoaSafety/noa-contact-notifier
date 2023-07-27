@@ -1,0 +1,24 @@
+version: "3.7"
+services:
+  noa-contact-notifier:
+    image: noa-contact-notifier
+    build:
+      context: ./src/Noa.ContactNotifier.Docker
+    ports:
+    - 10004:10004
+    environment:
+      NoaContactNotifier__Api__Port: 10004
+      NoaContactNotifier__Database__ConnectionString: mongodb://root:example@localhost:27017
+      NoaContactNotifier__Database__DatabaseName: noa-contact-notifier-db
+    links:
+    - mongo
+    depends_on:
+    - mongo
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+    - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
